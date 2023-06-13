@@ -13,8 +13,9 @@ def request_api_data(query_characters):
 
 def get_password_leaks_count(hashes, hash_to_check):
     # splitting password an num times it's been hacked
-    hashes = (line.split(':')  for line in hashes.text)
-    print(hashes)
+    hashes = (line.split(':')  for line in hashes.text.splitlines())
+    for h, count in hashes:
+        print(h, count)
 
 
 def pwned_api_check(password):
