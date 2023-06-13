@@ -1,5 +1,6 @@
 import requests  # like having a browser without a browster
 import hashlib # contains many of the SHA Hashings
+import sys
 
 
 def request_api_data(query_characters):
@@ -15,7 +16,9 @@ def get_password_leaks_count(hashes, hash_to_check):
     # splitting password an num times it's been hacked
     hashes = (line.split(':')  for line in hashes.text.splitlines())
     for h, count in hashes:
-        print(h, count)
+        if h == hash_to_check:
+            return count
+    return 0
 
 
 def pwned_api_check(password):
@@ -23,7 +26,15 @@ def pwned_api_check(password):
     sha1password = hashlib.sha1(password.encode("utf-8")).hexdigest().upper()  # In documentation for more info
     first5_char, tail = sha1password[:5], sha1password[5:]
     response = request_api_data(first5_char)
-    print(response)
     return get_password_leaks_count(response, tail)
 
-pwned_api_check("password")
+def main(args):
+    for password in args:
+        count = pwned_api_check(password)
+        if count :
+            print(f'{password} was found {count} times... you should probably change your password')
+        else:
+            print(f'{password} was NOT found. Carry on!!')
+        return 'done!'
+
+main(sys.argv[1:])
