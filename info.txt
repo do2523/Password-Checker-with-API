@@ -1,0 +1,1 @@
+encode('UTF-8') standard in encoding

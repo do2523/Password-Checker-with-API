@@ -12,7 +12,7 @@ def request_api_data(query_characters):
 
 def pwned_api_check(password):
     # Check Password if it exists in API response
-    print(password.encode("utf-8"))
-    # sha1password = hashlib.sha1(password.encode("utf-8")) # In documentation for more info
+    sha1password = hashlib.sha1(password.encode("utf-8")).hexdigest().upper() # In documentation for more info
+    return sha1password
 
 pwned_api_check("password")
